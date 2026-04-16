@@ -1,92 +1,94 @@
-# 🏥 Clinic Management API
+<div align="center">
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/>
-  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Flyway-CC0200?style=for-the-badge&logo=flyway&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=for-the-badge"/>
-</p>
+# Clinic Management API
 
-<p align="center">
-  API REST para gerenciamento completo de clínicas e consultórios médicos, desenvolvida com Java e Spring Boot.
-</p>
+API REST para gerenciamento completo de clínicas e consultórios médicos.
 
----
+<br/>
 
-## 📋 Sobre o Projeto
+![Java](https://img.shields.io/badge/Java_21-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot_3-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![Flyway](https://img.shields.io/badge/Flyway-CC0200?style=flat-square&logo=flyway&logoColor=white)
+![Status](https://img.shields.io/badge/status-em_desenvolvimento-yellow?style=flat-square)
 
-A **Clinic Management API** é uma solução backend voltada para a gestão de clínicas e consultórios. O sistema centraliza o cadastro de médicos e pacientes, o agendamento de consultas e, futuramente, integrará pagamentos via Pix e comunicação pelo WhatsApp.
+</div>
 
 ---
 
-## ✅ Funcionalidades Atuais
+## Sobre o Projeto
 
-- [x] Cadastro, listagem, atualização e exclusão de **médicos**
-- [x] Cadastro, listagem, atualização e exclusão de **pacientes**
+A **Clinic Management API** é uma solução backend voltada para a gestão de clínicas e consultórios. O sistema centraliza o cadastro de médicos e pacientes, o agendamento de consultas e, futuramente, integraração com WhatsApp e geração de chaves Pix para pagamentos.
+
+---
+
+## Funcionalidades
+
+#### Implementadas
+
+- [x] CRUD completo de **médicos** e **pacientes**
 - [x] Validação de **CPF** (`@CPF` via Hibernate Validator) e **CRM** (formato `0000-UF` via `@Pattern`)
 - [x] Gestão de **endereços** e **especialidades médicas**
 - [x] Controle de migrações com **Flyway**
 
----
-
-## 🛣️ Roadmap
+#### Roadmap
 
 - [ ] Agendamento e gerenciamento de **consultas**
 - [ ] **Integração com WhatsApp** — pré-cadastro de pacientes via bot
 - [ ] **Pagamentos via Pix** — geração de cobrança e webhook de confirmação
-- [ ] **Relatórios em PDF** — consultas, histórico do paciente, financeiro
+- [ ] **Relatórios em PDF** — consultas, histórico do paciente e financeiro
 - [ ] Acesso a relatórios pelo WhatsApp
-- [ ] Suporte a **Boleto** como método de pagamento adicional
 - [ ] Migração do banco de dados para **PostgreSQL**
 
 ---
 
-## 🔗 Endpoints
+## Endpoints
 
-### Médicos — `/medicos`
+### `Médicos`
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
+| Método | Rota | Descrição |
+|--------|------|-----------|
 | `POST` | `/medicos` | Cadastrar novo médico |
 | `GET` | `/medicos` | Listar médicos ativos |
-| `PUT` | `/medicos` | Atualizar dados do médico |
-| `DELETE` | `/medicos/{id}` | Inativar médico |
+| `PUT` | `/medicos/{id}` | Atualizar dados do médico |
 
 <details>
-<summary>Exemplo de requisição — POST /medicos</summary>
+<summary><strong>POST</strong> /medicos — exemplo de requisição</summary>
+<br/>
 
 ```json
 {
   "nome": "Dr. João Silva",
   "email": "joao.silva@clinica.com",
-  "crm": "123456",
+  "crm": "1234-ES",
   "especialidade": "CARDIOLOGIA",
   "endereco": {
     "logradouro": "Rua das Flores",
+    "numero": "100",
     "bairro": "Centro",
-    "cep": "29000000",
     "cidade": "Vitória",
     "uf": "ES",
-    "numero": "100"
+    "complemento": "Sala 5",
+    "cep": "29000000"
   }
 }
 ```
+
 </details>
 
----
+<br/>
 
-### Pacientes — `/pacientes`
+### `Pacientes`
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
+| Método | Rota | Descrição |
+|--------|------|-----------|
 | `POST` | `/pacientes` | Cadastrar novo paciente |
 | `GET` | `/pacientes` | Listar pacientes ativos |
-| `PUT` | `/pacientes` | Atualizar dados do paciente |
-| `DELETE` | `/pacientes/{id}` | Inativar paciente |
+| `PUT` | `/pacientes/{id}` | Atualizar dados do paciente |
 
 <details>
-<summary>Exemplo de requisição — POST /pacientes</summary>
+<summary><strong>POST</strong> /pacientes — exemplo de requisição</summary>
+<br/>
 
 ```json
 {
@@ -100,65 +102,48 @@ A **Clinic Management API** é uma solução backend voltada para a gestão de c
     "bairro": "Jardim América",
     "cidade": "Vila Velha",
     "uf": "ES",
-    "complemento": "Apto 12",
+    "complemento": "Apto 16",
     "cep": "29100000"
   }
 }
 ```
+
 </details>
 
-<details>
-<summary>Exemplo de response — GET /pacientes</summary>
-
-```json
-{
-  "nome": "Maria Oliveira",
-  "email": "maria.oliveira@email.com",
-  "cpf": "12345678909",
-  "endereco": {
-    "logradouro": "Av. Brasil",
-    "numero": "250",
-    "bairro": "Jardim América",
-    "cidade": "Vila Velha",
-    "uf": "ES",
-    "complemento": "Apto 12",
-    "cep": "29100000"
-  }
-}
-```
 </details>
 
 ---
 
-## 🚀 Como Rodar Localmente
+## Como Rodar Localmente
 
 ### Pré-requisitos
 
-- [Java 17+](https://adoptium.net/)
+- [Java 21+](https://adoptium.net/)
 - [Maven](https://maven.apache.org/)
 - [MySQL](https://www.mysql.com/)
 
 ### Passo a passo
 
 **1. Clone o repositório**
+
 ```bash
-git clone https://github.com/seu-usuario/clinic-management-api.git
+git clone https://github.com/mateusalvescosta/clinic-management-api.git
 cd clinic-management-api
 ```
 
-**2. Configure o banco de dados**
+**2. Crie o banco de dados**
 
-Crie um banco de dados MySQL:
 ```sql
 CREATE DATABASE clinic_management;
 ```
 
 **3. Configure o `application.properties`**
 
-Copie o arquivo de exemplo e preencha com seus dados:
 ```bash
 cp src/main/resources/application.properties.example src/main/resources/application.properties
 ```
+
+Preencha com suas credenciais:
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/clinic_management
@@ -170,6 +155,7 @@ spring.flyway.enabled=true
 ```
 
 **4. Execute a aplicação**
+
 ```bash
 ./mvnw spring-boot:run
 ```
@@ -178,25 +164,28 @@ A API estará disponível em `http://localhost:8080`.
 
 ---
 
-## 🛠️ Tecnologias
+## Tecnologias
 
 | Tecnologia | Descrição |
-|-----------|-----------|
-| Java 17 | Linguagem principal |
+|------------|-----------|
+| Java 21 | Linguagem principal |
 | Spring Boot | Framework backend |
 | Spring Data JPA | Persistência de dados |
 | Hibernate Validator | Validação de CPF, CRM, e-mail e telefone |
 | Flyway | Controle de migrações do banco |
-| MySQL | Banco de dados (migração para PostgreSQL planejada) |
+| MySQL | Banco de dados *(migração para PostgreSQL planejada)* |
 | Maven | Gerenciamento de dependências |
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
-Atualmente organizada por camada técnica, com migração planejada para estrutura por domínio.
+O projeto está atualmente organizado por camada técnica, com migração planejada para arquitetura por domínio.
 
-**Estrutura atual (por camada):**
+<details>
+<summary>Estrutura atual — por camada</summary>
+<br/>
+
 ```
 src/main/java/com/mateusalvescosta/clinic_management_api/
 ├── controller/
@@ -226,17 +215,22 @@ src/main/java/com/mateusalvescosta/clinic_management_api/
 ├── service/
 │   ├── MedicoService.java
 │   └── PacienteService.java
-└── ApiApplication.java
+└── ClinicManagementApplication.java
 
 src/main/resources/
 ├── db/migration/
 │   ├── V1__create-table-medicos.sql
 │   └── V2__create-table-pacientes.sql
-├── application.properties
-└── application.properties.example
+├── application.properties.example
+└── application.properties        ← não versionado
 ```
 
-**Estrutura planejada (por domínio):**
+</details>
+
+<details>
+<summary>Estrutura planejada — por domínio</summary>
+<br/>
+
 ```
 src/main/java/com/mateusalvescosta/clinic_management_api/
 ├── medico/
@@ -258,18 +252,23 @@ src/main/java/com/mateusalvescosta/clinic_management_api/
 │       ├── CreatePacienteRequest.java
 │       ├── UpdatePacienteRequest.java
 │       └── PacienteSummaryResponse.java
-├── consulta/              ← em breve
-├── pagamento/             ← em breve
 ├── endereco/
 │   ├── Endereco.java
 │   └── dto/
 │       ├── CreateEnderecoRequest.java
 │       └── UpdateEnderecoRequest.java
-└── ApiApplication.java
+├── consulta/              ← em breve
+├── pagamento/             ← em breve
+└── ClinicManagementApplication.java
 ```
+
+</details>
 
 ---
 
-## 📄 Licença
+## Autor
 
-Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+Feito por **Mateus Alves Costa**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mateusalvescosta/)
+[![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=flat-square&logo=whatsapp&logoColor=white)](https://wa.me/5527999899995)
